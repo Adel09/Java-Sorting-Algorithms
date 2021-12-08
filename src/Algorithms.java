@@ -1,7 +1,63 @@
+import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class Algorithms {
+
+    public static void main(String[] args) {
+
+        Scanner in = new Scanner(System.in);
+        System.out.println("How many numbers do you want in the array? ");
+        int length = Integer.parseInt(in.nextLine());
+
+        Random random = new Random();
+        int arr[] = new int[length];
+        for(int i = 0; i<length; i++){
+            arr[i] = random.nextInt(100);
+        }
+
+        //bubbleSort(arr);//sorting array elements using bubble sort
+        //insertionSort(arr);
+        //selectionSort(arr);
+
+        //Calling Mergesort
+//        {
+//            Algorithms a = new Algorithms();
+//            System.out.println("\nBefore sorting array elements are - ");
+//            a.printMergeArray(arr, arr.length);
+//            long startTime = System.currentTimeMillis();
+//
+//            a.mergeSort(arr, 0, arr.length - 1);
+//            System.out.println("\n");
+//            a.printMergeArray(arr, arr.length);
+//
+//            long endTime = System.currentTimeMillis();
+//
+//            System.out.println("That took " + (endTime - startTime) + " milliseconds");
+//        }
+
+        //shell(arr, arr.length);
+
+        //Calling quicksort
+        {
+            Algorithms a = new Algorithms();
+            System.out.println("\nBefore sorting array elements are - ");
+            a.printQuickArr(arr, arr.length);
+            long startTime = System.currentTimeMillis();
+
+            a.quick(arr, 0, arr.length - 1);
+            System.out.println("\n");
+            a.printMergeArray(arr, arr.length);
+
+            long endTime = System.currentTimeMillis();
+            System.out.println("\n");
+            System.out.println("That took " + (endTime - startTime) + " milliseconds");
+        }
+
+
+
+    }
 
     static void bubbleSort(int[] arr) {
         System.out.println("Array Before Bubble Sort");
@@ -61,40 +117,7 @@ public class Algorithms {
     }
 
 
-    public static void main(String[] args) {
 
-        Scanner in = new Scanner(System.in);
-        System.out.println("How many numbers do you want in the array? ");
-        int length = Integer.parseInt(in.nextLine());
-
-        Random random = new Random();
-        int arr[] = new int[length];
-        for(int i = 0; i<length; i++){
-            arr[i] = random.nextInt(100);
-        }
-
-        //bubbleSort(arr);//sorting array elements using bubble sort
-        //insertionSort(arr);
-        //selectionSort(arr);
-
-        {
-            Algorithms a = new Algorithms();
-            System.out.println("\nBefore sorting array elements are - ");
-            a.printMergeArray(arr, arr.length);
-            long startTime = System.currentTimeMillis();
-
-            a.mergeSort(arr, 0, arr.length - 1);
-            System.out.println("\n");
-            a.printMergeArray(arr, arr.length);
-
-            long endTime = System.currentTimeMillis();
-
-            System.out.println("That took " + (endTime - startTime) + " milliseconds");
-        }
-
-
-
-    }
 
     //Selection sort
     public static void selectionSort(int[] arr){
@@ -128,8 +151,7 @@ public class Algorithms {
 
     //MERGE SORT
     /* Function to merge the subarrays of a[] */
-    void merge(int a[], int beg, int mid, int end)
-    {
+    void merge(int a[], int beg, int mid, int end) {
         int i, j, k;
         int n1 = mid - beg + 1;
         int n2 = end - mid;
@@ -148,40 +170,33 @@ public class Algorithms {
         j = 0; /* initial index of second sub-array */
         k = beg;  /* initial index of merged sub-array */
 
-        while (i < n1 && j < n2)
-        {
-            if(LeftArray[i] <= RightArray[j])
-            {
+        while (i < n1 && j < n2) {
+            if(LeftArray[i] <= RightArray[j]) {
                 a[k] = LeftArray[i];
                 i++;
             }
-            else
-            {
+            else {
                 a[k] = RightArray[j];
                 j++;
             }
             k++;
         }
-        while (i<n1)
-        {
+        while (i<n1) {
             a[k] = LeftArray[i];
             i++;
             k++;
         }
 
-        while (j<n2)
-        {
+        while (j<n2) {
             a[k] = RightArray[j];
             j++;
             k++;
         }
     }
 
-    void mergeSort(int a[], int beg, int end)
-    {
+    void mergeSort(int a[], int beg, int end) {
 
-        if (beg < end)
-        {
+        if (beg < end) {
             int mid = (beg + end) / 2;
             mergeSort(a, beg, mid);
             mergeSort(a, mid + 1, end);
@@ -190,7 +205,88 @@ public class Algorithms {
     }
 
     /* Function to print the array */
-    void printMergeArray(int a[], int n)
+    void printMergeArray(int a[], int n) {
+        int i;
+        for (i = 0; i < n; i++)
+            System.out.print(a[i] + " ");
+    }
+
+    //SHELL SORT
+    /* function to implement shellSort */
+    static void shell(int a[], int n) {
+        System.out.println("Array Before Selection Sort");
+        for(int i=0; i < a.length; i++){
+            System.out.print(a[i] + " ");
+        }
+        long startTime = System.currentTimeMillis();
+        /* Rearrange the array elements at n/2, n/4, ..., 1 intervals */
+        for (int interval = n/2; interval > 0; interval /= 2)
+        {
+            for (int i = interval; i < n; i += 1)
+            {
+            /* store a[i] to the variable temp and make
+
+the ith position empty */
+                int temp = a[i];
+                int j;
+                for (j = i; j >= interval && a[j - interval] >
+                        temp; j -= interval)
+                    a[j] = a[j - interval];
+
+            /* put temp (the original a[i]) in its correct
+position */
+                a[j] = temp;
+            }
+        }
+        long endTime = System.currentTimeMillis();
+        System.out.println("\n");
+        System.out.println("That took " + (endTime - startTime) + " milliseconds");
+
+        System.out.println("Array After Selection Sort");
+        for(int i=0; i < a.length; i++){
+            System.out.print(a[i] + " ");
+        }
+        System.out.println("\n");
+    }
+
+//QUICK SORT
+int partition (int a[], int start, int end)
+{
+    int pivot = a[end]; // pivot element
+    int i = (start - 1);
+
+    for (int j = start; j <= end - 1; j++)
+    {
+        // If current element is smaller than the pivot
+        if (a[j] < pivot)
+        {
+            i++; // increment index of smaller element
+            int t = a[i];
+            a[i] = a[j];
+            a[j] = t;
+        }
+    }
+    int t = a[i+1];
+    a[i+1] = a[end];
+    a[end] = t;
+    return (i + 1);
+}
+
+    /* function to implement quick sort */
+    public void quick(int a[], int start, int end) /* a[] = array to be sorted, start = Starting index, end = Ending index */
+    {
+
+        if (start < end)
+        {
+            int p = partition(a, start, end);  //p is partitioning index
+            quick(a, start, p - 1);
+            quick(a, p + 1, end);
+        }
+
+    }
+
+    /* function to print an array */
+    void printQuickArr(int a[], int n)
     {
         int i;
         for (i = 0; i < n; i++)
